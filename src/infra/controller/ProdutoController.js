@@ -8,6 +8,19 @@ class ProdutoController {
   constructor() {
     this.rProduto = ProdutoRepository;
   }
+  async getAll() {
+    try {
+      const response = await this.rProduto.getAll();
+      const list = Produto.create_list(response.data);
+      return new Response(response.status, "", list);
+    } catch (error) {
+      console.log(error);
+      if (error instanceof AxiosError) {
+        return new CustomError(error.response.status, error.response.data.message);
+      }
+      return error;
+    }
+  }
   async getByID(id) {
     if (id === "Novo") return new Produto({});
     const response = await this.rProduto.getById(id);
@@ -17,22 +30,39 @@ class ProdutoController {
   async insert(iProduto) {
     try {
       const produto = Produto.create(iProduto);
-      const res = await this.rProduto.insert(produto);
+      console.log(produto);
+      const res = await this.rProduto.insert(produto.toJson());
       return new Response(res.status, res.data.message);
     } catch (error) {
-      console.log(error);
       if (error instanceof AxiosError) {
-        return new CustomError(
-          error.response.status,
-          error.response.data.message
-        );
+        return new CustomError(error.response.status, error.response.data.message);
+      }
+      return error;
+    }
+  }
+  async delete(iProduto) {
+    try {
+      const produto = Produto.create(iProduto);
+      const res = await this.rProduto.delete(produto.toJson());
+      return new Response(res.status, res.data.message);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return new CustomError(error.response.status, error.response.data.message);
       }
       return error;
     }
   }
   async update(iProduto) {
-    const produto = Produto.create(iProduto);
-    await this.rProduto.update(produto);
+    try {
+      const produto = Produto.create(iProduto);
+      const response = await this.rProduto.update(produto.toJson());
+      return new Response(response.status, response.data.message);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return new CustomError(error.response.status, error.response.data.message);
+      }
+      return error;
+    }
   }
 }
 export default new ProdutoController();

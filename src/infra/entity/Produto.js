@@ -1,31 +1,50 @@
 import CustomError from "./CustomError";
 import Codigo from "./valueobject/Codigo";
 import Descricao from "./valueobject/Descricao";
+import Preco from "./valueobject/Preco";
 export default class Produto {
   constructor(input) {
-    const { id = "", descricao = "" } = input;
+    const { id = "", nome = "", preco_venda = "", imagem = null } = input;
     this.id = Codigo.create(id).value;
-    this.descricao = Descricao.create(descricao).value;
+    this.nome = Descricao.create(nome, 80).value;
+    this.preco_venda = Preco.create(preco_venda).getMoneyValue();
+    this.imagem = imagem;
   }
-  static create(input) {
-    const { id = "", descricao = "" } = input;
-    // Verifica o campo 'descricao'
+  validate() {
     const error = new CustomError("Erro na validação dos campos", 400);
 
-    if (descricao === "") {
-      error.addError("produto.descricao", "A descrição é obrigatória");
+    if (this.nome === "") {
+      error.addError("produto.nome", "O nome é obrigatório");
+    }
+    if (Preco.create(this.preco_venda).value < 0) {
+      error.addError("produto.preco_venda", "Preço de venda não pode ser negativo");
     }
 
-    // Verifica o campo 'id'
-    if (id === "") {
-      error.addError("produto.id", "O ID é obrigatório");
-    }
-
-    // Verifica se há algum erro e lança o erro se houver
     if (error.errors.length > 0) {
       throw error;
     }
+  }
 
-    return new Produto(input);
+  static create(input) {
+    const produto = new Produto(input);
+    produto.validate();
+    return new Produto(produto);
+  }
+
+  static create_list(input) {
+    const list = [];
+    input.map((produto) => {
+      list.push(Produto.create(produto));
+    });
+    return list;
+  }
+
+  toJson() {
+    return {
+      id: this.id,
+      nome: this.nome,
+      preco_venda: Preco.create(this.preco_venda).value,
+      imagem: this.imagem,
+    };
   }
 }

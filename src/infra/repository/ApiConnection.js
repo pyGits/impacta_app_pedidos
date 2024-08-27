@@ -31,6 +31,13 @@ class ApiConnection {
   async delete(endpoint, params = {}) {
     return this.client.delete(endpoint, { params });
   }
+  async post_image(endpoint, data = {}) {
+    return this.client.post(endpoint, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
 }
 
 export default new ApiConnection();

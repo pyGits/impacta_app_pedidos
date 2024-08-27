@@ -3,8 +3,8 @@ export default class Descricao {
     this.value = value;
   }
 
-  static create(ivalue) {
-    const value = ivalue.toUpperCase();
+  static create(ivalue, tamanho_maximo) {
+    const value = ivalue.toUpperCase().substring(0, tamanho_maximo);
     return new Descricao(value);
   }
 }
