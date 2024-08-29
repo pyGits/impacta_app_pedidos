@@ -6,19 +6,10 @@
     </div>
 
     <!-- Data Table -->
-    <v-data-table :headers="headers" :items="produtos" item-key="id" class="elevation-1">
-      <!-- Slot para adicionar campo de pesquisa -->
-      <!-- <template #top>
-        <v-toolbar flat>
-          <v-toolbar-title>Lista de Produtos</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-text-field v-model="search" append-icon="mdi-magnify" label="Pesquisar" single-line hide-details clearable></v-text-field>
-        </v-toolbar>
-      </template> -->
-
+    <v-data-table :headers="headers" :items="produtos" item-key="id" class="elevation-1 row-pointer">
       <!-- Slot para linhas de itens -->
       <template #item="{ item }">
-        <tr>
+        <tr @click="editarProduto(item)">
           <td>{{ item.id }}</td>
           <td>{{ item.nome }}</td>
           <td>{{ item.preco_venda }}</td>
@@ -74,6 +65,9 @@ export default {
 </script>
 
 <style scoped>
+.row-pointer >>> tbody tr :hover {
+  cursor: pointer;
+}
 .v-toolbar {
   margin-bottom: 16px;
 }
