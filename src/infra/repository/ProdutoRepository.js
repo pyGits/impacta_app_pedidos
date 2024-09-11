@@ -5,7 +5,6 @@ class ProdutoRepository {
     return await ApiConnection.delete(`/produto/${produto.id}`);
   }
   async getById(id) {
-    console.log(id);
     return await ApiConnection.get(`/produto/${id}`);
   }
   async insert(produto) {

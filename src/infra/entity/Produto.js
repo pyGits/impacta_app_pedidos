@@ -29,7 +29,7 @@ export default class Produto {
   static create(input) {
     const produto = new Produto(input);
     produto.validate();
-    return new Produto(produto);
+    return produto;
   }
 
   static create_list(input) {

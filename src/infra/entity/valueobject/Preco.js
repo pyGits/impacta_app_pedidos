@@ -2,6 +2,7 @@ import Masks from "../Masks";
 export default class Preco {
   constructor(preco = 0) {
     this.value = preco;
+    this.masked = this.getMoneyValue();
   }
 
   getMoneyValue() {
