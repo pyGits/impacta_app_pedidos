@@ -1,5 +1,11 @@
 # Front End Aplicativo de Delivery
 
+<<<<<<< HEAD
+
+## Instalar Projeto - Front End
+
+=======
+
 ## Instalar Projeto - Front End
 
 ```
@@ -7,6 +13,10 @@
 ```
 
 ### Compiles and hot-reloads for development
+
+<<<<<<< HEAD
+
+=======
 
 ```
 2 - Rodar com "npm run serve"
