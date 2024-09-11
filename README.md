@@ -1,29 +1,13 @@
-# front
+# Front End Aplicativo de Delivery
 
-## Project setup
+## Instalar Projeto - Front End
+
 ```
-npm install
+1 - rodar o comando - "npm install" para instalar as dependencias
 ```
 
 ### Compiles and hot-reloads for development
-```
-npm run serve
-```
 
-### Compiles and minifies for production
 ```
-npm run build
+2 - Rodar com "npm run serve"
 ```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
