@@ -7,9 +7,23 @@ class ApiConnection {
       timeout: 10000, // Tempo de timeout para requisições
       headers: {
         "Content-Type": "application/json",
-        // Adicione outros cabeçalhos se necessário
+        authorization: localStorage.getItem("token"),
       },
     });
+    this.client.interceptors.response.use(
+      (response) => {
+        // Retorna a resposta normalmente
+        return response;
+      },
+      (error) => {
+        // Verifica se o erro é 401
+        if ((error.response && error.response.status === 401) || error.response.status === 403) {
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+        }
+        return Promise.reject(error);
+      }
+    );
   }
 
   // Método GET

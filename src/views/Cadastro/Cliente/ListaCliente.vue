@@ -1,21 +1,21 @@
 <template>
   <v-container>
-    <!-- Botão para adicionar novo produto -->
+    <!-- Botão para adicionar novo cliente -->
     <div>
-      <v-btn color="primary" @click="novoProduto">Novo Produto</v-btn>
+      <v-btn color="primary" @click="novoCliente">Novo Cliente</v-btn>
     </div>
 
     <!-- Data Table -->
-    <v-data-table :headers="headers" :items="produtos" item-key="id" class="elevation-1 row-pointer">
+    <v-data-table :headers="headers" :items="clientes" item-key="id" class="elevation-1 row-pointer">
       <!-- Slot para linhas de itens -->
       <template #item="{ item }">
         <tr>
           <td>{{ item.id }}</td>
           <td>{{ item.nome }}</td>
-          <td>{{ item.preco_venda }}</td>
+          <td>{{ item.cnpjcpf }}</td>
           <td>
-            <v-icon small class="mr-2" @click="editarProduto(item)"> mdi-pencil </v-icon>
-            <v-icon small class="mr-2" @click="deletarProduto(item)"> mdi-delete </v-icon>
+            <v-icon small class="mr-2" @click="editarCliente(item)"> mdi-pencil </v-icon>
+            <v-icon small class="mr-2" @click="deletarCliente(item)"> mdi-delete </v-icon>
           </td>
         </tr>
       </template>
@@ -26,10 +26,10 @@
 <script>
 import CustomError from "@/infra/entity/CustomError";
 import Response from "@/infra/entity/Response";
-import ProdutoController from "@/infra/controller/ProdutoController";
+import ClienteController from "@/infra/controller/ClienteController";
 export default {
   async mounted() {
-    await this.carregarProdutos();
+    await this.carregarClientes();
   },
   data() {
     return {
@@ -37,27 +37,27 @@ export default {
       headers: [
         { text: "ID", value: "id" },
         { text: "Descrição", value: "descricao" },
-        { text: "Preço Venda", value: "preco_venda" },
+        { text: "CNPJ/CPF", value: "cnpjcpf" },
         { text: "Ações", value: "actions", sortable: false },
       ],
-      produtos: [],
+      clientes: [],
     };
   },
   methods: {
-    novoProduto() {
-      this.$router.push("/Cadastro/Produto/Novo");
+    novoCliente() {
+      this.$router.push("/Cadastro/Cliente/Novo");
     },
-    editarProduto(item) {
-      this.$router.push(`/Cadastro/Produto/${item.id}`);
+    editarCliente(item) {
+      this.$router.push(`/Cadastro/Cliente/${item.id}`);
     },
-    async deletarProduto(item) {
-      const res = await ProdutoController.delete(item);
+    async deletarCliente(item) {
+      const res = await ClienteController.delete(item);
       if (res instanceof Response) this.$toasted.success(res.message);
-      await this.carregarProdutos();
+      await this.carregarClientes();
     },
-    async carregarProdutos() {
-      const res = await ProdutoController.getAll();
-      if (res.status === 200) this.produtos = res.data;
+    async carregarClientes() {
+      const res = await ClienteController.getAll();
+      if (res.status === 200) this.clientes = res.data;
       if (res instanceof CustomError) this.$toasted.error(res.message);
     },
   },
