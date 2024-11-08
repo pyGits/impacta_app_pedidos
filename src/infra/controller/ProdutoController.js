@@ -8,6 +8,19 @@ class ProdutoController {
   constructor() {
     this.rProduto = ProdutoRepository;
   }
+  async getAllByTenant(tenant_id) {
+    try {
+      const response = await this.rProduto.getAllByTenant(tenant_id);
+      const list = Produto.create_list(response.data);
+      return new Response(response.status, "", list);
+    } catch (error) {
+      console.log(error);
+      if (error instanceof AxiosError) {
+        return new CustomError(error.response.status, error.response.data.message);
+      }
+      return error;
+    }
+  }
   async getAll() {
     try {
       const response = await this.rProduto.getAll();

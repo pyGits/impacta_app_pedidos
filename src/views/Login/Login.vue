@@ -28,11 +28,11 @@ import CustomError from "@/infra/entity/CustomError";
 export default {
   data() {
     return {
-      email: "teste@gmail.com",
-      password: "123456",
+      email: "",
+      password: "",
       valid: false,
       emailRules: [(v) => !!v || "E-mail é obrigatório", (v) => /.+@.+\..+/.test(v) || "E-mail deve ser válido"],
-      passwordRules: [(v) => !!v || "Senha é obrigatória", (v) => v.length >= 6 || "Senha deve ter no mínimo 6 caracteres"],
+      passwordRules: [(v) => !!v || "Senha é obrigatória", (v) => (v && v.length >= 6) || "A senha deve ter pelo menos 6 caracteres"],
     };
   },
   methods: {

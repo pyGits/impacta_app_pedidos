@@ -16,5 +16,8 @@ class ClienteRepository {
   async getAll() {
     return await ApiConnection.get(`/cliente`);
   }
+  async getAllByTenant(tenant_id) {
+    return await ApiConnection.get(`/tenant/${tenant_id}/cliente`);
+  }
 }
 export default new ClienteRepository();

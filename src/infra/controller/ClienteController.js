@@ -63,5 +63,18 @@ class ClienteController {
       return error;
     }
   }
+  async getAllByTenant(tenant_id) {
+    try {
+      const response = await this.rCliente.getAllByTenant(tenant_id);
+      const list = Cliente.create_list(response.data);
+      return new Response(response.status, "", list);
+    } catch (error) {
+      console.log(error);
+      if (error instanceof AxiosError) {
+        return new CustomError(error.response.status, error.response.data.message);
+      }
+      return error;
+    }
+  }
 }
 export default new ClienteController();

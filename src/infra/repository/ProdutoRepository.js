@@ -16,5 +16,8 @@ class ProdutoRepository {
   async getAll() {
     return await ApiConnection.get(`/produto`);
   }
+  async getAllByTenant(tenant_id) {
+    return await ApiConnection.get(`/tenant/${tenant_id}/produto`);
+  }
 }
 export default new ProdutoRepository();

@@ -4,10 +4,10 @@ import Descricao from "./valueobject/Descricao";
 import Preco from "./valueobject/Preco";
 export default class Produto {
   constructor(input) {
-    const { id = "", nome = "", preco_venda = "", imagem = null, categoria_id = 0 } = input;
+    const { id = "", nome = "", preco_venda = 0, imagem = null, categoria_id = 0 } = input;
     this.id = Codigo.create(id).value;
     this.nome = Descricao.create(nome, 80).value;
-    this.preco_venda = Preco.create(preco_venda).getMoneyValue();
+    this.preco_venda = Preco.create(preco_venda).value;
     this.imagem = imagem;
     this.categoria_id = categoria_id;
   }
@@ -44,7 +44,7 @@ export default class Produto {
     return {
       id: this.id,
       nome: this.nome,
-      preco_venda: Preco.create(this.preco_venda).value,
+      preco_venda: this.preco_venda,
       categoria_id: this.categoria_id,
       imagem: this.imagem,
     };

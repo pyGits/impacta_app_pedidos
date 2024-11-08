@@ -22,6 +22,9 @@
         <v-list-item to="/Cadastro/Cliente" router>
           <v-list-item-title>Cadastrar Cliente</v-list-item-title>
         </v-list-item>
+        <v-list-item to="/Listar/Pedido" router>
+          <v-list-item-title>Listar Pedidos</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 

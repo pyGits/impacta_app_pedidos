@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app" data-app="true">
     <!-- Verifica se o usuário está autenticado -->
     <Container v-if="isLoggedIn"> </Container>
 

@@ -48,16 +48,16 @@ export default {
     return {
       tenant: {
         nome: "",
-        email: "teste@gmail.com",
-        senha: "123456",
-        confirm_senha: "123456",
+        email: "",
+        senha: "",
+        confirm_senha: "",
       },
       error: new CustomError({}),
       valid: false,
       showPassword: false,
       nameRules: [(v) => !!v || "Nome é obrigatório", (v) => (v && v.length >= 3) || "O nome deve ter pelo menos 3 caracteres"],
       emailRules: [(v) => !!v || "E-mail é obrigatório", (v) => /.+@.+\..+/.test(v) || "E-mail deve ser válido"],
-      passwordRules: [(v) => !!v || "Senha é obrigatória", (v) => v.length >= 6 || "A senha deve ter pelo menos 6 caracteres"],
+      passwordRules: [(v) => !!v || "Senha é obrigatória", (v) => (v && v.length >= 6) || "A senha deve ter pelo menos 6 caracteres"],
       confirmPasswordRules: [(v) => !!v || "Confirmação de senha é obrigatória", (v) => v === this.tenant.senha || "As senhas devem coincidir"],
       // Armazena os erros personalizados
       nameErrors: [],
