@@ -1,15 +1,20 @@
 import CustomError from "./CustomError";
 import Codigo from "./valueobject/Codigo";
 import ProdutoItem from "./ProdutoItem";
+import Cliente from "./Cliente";
+import Entregador from "./Entregador";
 
 export default class Pedido {
   constructor(input) {
-    const { id = "", cliente_id = "", data = new Date(), items = [] } = input;
+    const { id = "", data = new Date(), cliente = {}, entregador = {}, items = [], status = "PENDENTE", entregador_id = 0 } = input;
     this.id = Codigo.create(id).value;
-    this.cliente_id = cliente_id;
+    this.cliente = new Cliente(cliente);
     this.data = data;
     this.items = items;
     this.total = this.calculateTotal();
+    this.status = status;
+    this.entregador_id = entregador_id;
+    this.entregador = new Entregador(entregador);
   }
 
   calculateTotal() {
@@ -35,10 +40,12 @@ export default class Pedido {
   validate() {
     const error = new CustomError("Erro na validação dos campos", 400);
 
-    if (this.cliente_id === "") {
-      error.addError("pedido.cliente_id", "O cliente é obrigatório");
+    if (this.cliente.celular === "") {
+      error.addError("pedido.cliente.celular", "Cliente deve preencher o número de celular");
     }
-
+    if (this.cliente.nome === "") {
+      error.addError("pedido.cliente.nome", "Cliente deve preencher o nome");
+    }
     if (this.items.length === 0) {
       error.addError("pedido.items", "O pedido deve ter pelo menos um item");
     }
@@ -63,10 +70,12 @@ export default class Pedido {
   toJson() {
     return {
       id: this.id,
-      cliente_id: this.cliente_id,
       data: this.data,
       items: this.items.map((item) => item.toJson()),
       total: this.total,
+      cliente: this.cliente.toJson(),
+      status: this.status,
+      entregador_id: this.entregador_id,
     };
   }
 }

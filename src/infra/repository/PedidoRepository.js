@@ -9,8 +9,8 @@ class PedidoRepository {
     return await ApiConnection.get(`/pedido/${id}`);
   }
 
-  async update(tenant_id, pedido) {
-    return await ApiConnection.put(`/pedido/${tenant_id}/${pedido.id}`, pedido);
+  async update(pedido) {
+    return await ApiConnection.put(`/pedido/${pedido.id}`, pedido);
   }
 
   async delete(pedido) {
@@ -19,6 +19,9 @@ class PedidoRepository {
 
   async getAll() {
     return await ApiConnection.get(`/pedido`);
+  }
+  async getByCelular(tenant_id, celular) {
+    return await ApiConnection.get(`/pedido/${tenant_id}/celular/${celular}`);
   }
 }
 

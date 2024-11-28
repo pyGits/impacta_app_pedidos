@@ -19,5 +19,8 @@ class ClienteRepository {
   async getAllByTenant(tenant_id) {
     return await ApiConnection.get(`/tenant/${tenant_id}/cliente`);
   }
+  async getByCelular(celular, tenant_id) {
+    return await ApiConnection.get(`/cliente/${celular}/${tenant_id}/celular`);
+  }
 }
 export default new ClienteRepository();

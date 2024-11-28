@@ -27,6 +27,14 @@ class ClienteController {
     const cliente = Cliente.create(response.data);
     return cliente;
   }
+  async getByCelular(celular, tenant_id) {
+    if (celular === "") return null;
+    const response = await this.rCliente.getByCelular(celular, tenant_id);
+    if (response.data) {
+      const cliente = Cliente.create(response.data);
+      return cliente;
+    }
+  }
   async insert(iCliente) {
     try {
       const cliente = Cliente.create(iCliente);

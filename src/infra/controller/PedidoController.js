@@ -8,6 +8,22 @@ class PedidoController {
   constructor() {
     this.rPedido = PedidoRepository;
   }
+  async getByCelular(celular, tenant_id) {
+    try {
+      const response = await PedidoRepository.getByCelular(tenant_id, celular);
+      return new Response(response.status, "", response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async atualizarPedido(iPedido) {
+    try {
+      const response = await this.rPedido.update(iPedido.toJson());
+      return new Response(response.status, response.data.message, "");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async insert(tenant_id, iPedido) {
     try {

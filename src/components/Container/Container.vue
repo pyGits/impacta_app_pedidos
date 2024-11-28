@@ -17,14 +17,54 @@
         <v-divider></v-divider>
         <!-- Links de navegação da sidebar -->
         <v-list-item to="/Cadastro/Produto" router>
-          <v-list-item-title>Cadastrar Produto</v-list-item-title>
+          <v-list-item-icon>
+            <v-icon>mdi-package</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Cadastrar Produto</v-list-item-title>
+          </v-list-item-content>
         </v-list-item>
         <v-list-item to="/Cadastro/Cliente" router>
-          <v-list-item-title>Cadastrar Cliente</v-list-item-title>
+          <v-list-item-icon>
+            <v-icon>mdi-account-plus</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Cadastrar Cliente</v-list-item-title>
+          </v-list-item-content>
         </v-list-item>
         <v-list-item to="/Listar/Pedido" router>
-          <v-list-item-title>Listar Pedidos</v-list-item-title>
+          <v-list-item-icon>
+            <v-icon>mdi-format-list-bulleted</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Listar Pedidos</v-list-item-title>
+          </v-list-item-content>
         </v-list-item>
+        <v-list-item to="/Cadastro/Entregador" router>
+          <v-list-item-icon>
+            <v-icon>mdi-bicycle</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Cadastrar Entregador</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
+        <!-- Submenu de Configurações -->
+        <v-list-group v-model="configurationsOpen" prepend-icon="mdi-cog">
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>Configurações</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item to="/Configuracoes/Geral" router>
+            <v-list-item-icon>
+              <v-icon>mdi-cog</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Geral</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
 
@@ -57,6 +97,7 @@ export default {
   data() {
     return {
       drawer: false, // Controle do drawer para telas menores
+      configurationsOpen: false, // Controle do submenu de configurações
     };
   },
   methods: {

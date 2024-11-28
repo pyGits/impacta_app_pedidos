@@ -6,13 +6,19 @@
       <v-card-text>
         <v-row>
           <v-col cols="12" md="4">
-            <v-text-field v-model="pedido.cliente_id" label="Cliente" readonly></v-text-field>
+            <v-text-field v-model="pedido.cliente.nome" label="Cliente" disabled></v-text-field>
           </v-col>
           <v-col cols="12" md="4">
-            <v-text-field v-model="pedido.data" label="Data" readonly></v-text-field>
+            <v-text-field v-model="pedido.data" label="Data" disabled></v-text-field>
           </v-col>
           <v-col cols="12" md="4">
-            <v-text-field :value="formatCurrency(pedido.total)" label="Total" readonly></v-text-field>
+            <v-text-field :value="formatCurrency(pedido.total)" label="Total" disabled></v-text-field>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-select v-model="pedido.status" :items="statusOptions" label="Status"></v-select>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-select v-model="pedido.entregador_id" :items="entregadores" item-text="nome" item-value="id" label="Entregador"></v-select>
           </v-col>
         </v-row>
 
@@ -33,7 +39,8 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="voltar"> Voltar </v-btn>
+        <v-btn color="seccondary" @click="voltar"> Voltar </v-btn>
+        <v-btn color="primary" @click="atualizarPedido">Atualizar Pedido</v-btn>
       </v-card-actions>
     </v-card>
   </v-container>
@@ -43,32 +50,50 @@
 import PedidoController from "@/infra/controller/PedidoController";
 import { formatCurrency, formatDate } from "@/utils/formatters";
 import Pedido from "@/infra/entity/Pedido";
+import Response from "@/infra/entity/Response";
+import EntregadorController from "@/infra/controller/EntregadorController";
 
 export default {
   name: "EditarPedido",
   data() {
     return {
-      loading: false,
-      pedido: new Pedido({ data: new Date() }),
+      entregadores: [],
+      pedido: new Pedido({}),
       itemHeaders: [
         { text: "Produto", value: "produto_nome" },
         { text: "Quantidade", value: "quantidade" },
         { text: "Valor Unitário", value: "valor_unitario" },
         { text: "Subtotal", value: "subtotal" },
       ],
+      statusOptions: ["PENDENTE", "EM PROGRESSO", "CONCLUÍDO", "CANCELADO"],
     };
+  },
+  async mounted() {
+    await this.carregarEntregadores();
   },
   methods: {
     formatCurrency,
     formatDate,
 
+    async carregarEntregadores() {
+      const res = await EntregadorController.getAll();
+      this.entregadores = res;
+    },
+    async atualizarPedido() {
+      const res = await PedidoController.atualizarPedido(this.pedido);
+      if (res instanceof Response) {
+        this.$toasted.success(res.message);
+        this.$router.push("/Listar/Pedido");
+      } else {
+        this.$toasted.error("Erro ao atualizar pedido");
+      }
+    },
+
     async carregarPedido() {
-      this.loading = true;
       try {
         const response = await PedidoController.getById(this.$route.params.id);
         if (response.status === 200) {
-          this.pedido = response.data;
-          console.log(this.pedido);
+          this.pedido = new Pedido(response.data);
           // Formatando a data
           this.pedido.data = formatDate(this.pedido.data);
         } else {
@@ -79,8 +104,6 @@ export default {
         console.error(error);
         this.$toasted.error("Erro ao carregar pedido");
         this.voltar();
-      } finally {
-        this.loading = false;
       }
     },
 

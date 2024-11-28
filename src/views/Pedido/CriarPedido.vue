@@ -1,19 +1,19 @@
 <template>
   <v-container>
     <v-card>
+      <v-btn @click="consultarPedido">Consultar Pedido</v-btn>
       <v-card-title>Novo Pedido</v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid">
           <!-- Cliente Select -->
-          <v-select
-            v-model="pedido.cliente_id"
-            :items="clientes"
-            item-text="nome"
-            item-value="id"
-            label="Cliente"
-            :error-messages="errors['pedido.cliente_id']"
+          <v-text-field
+            v-model="pedido.cliente.celular"
+            label="Celular do Cliente"
+            :error-messages="errors['pedido.cliente_celular']"
             required
-          ></v-select>
+            @blur="handleBlur"
+          ></v-text-field>
+          <v-text-field v-model="pedido.cliente.nome" label="Nome do Cliente" :error-messages="errors['pedido.cliente_nome']" required></v-text-field>
 
           <!-- Items do Pedido -->
           <v-card class="mt-4" outlined>
@@ -46,7 +46,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="grey darken-1" text @click="$router.push('/pedidos')"> Cancelar </v-btn>
-        <v-btn @click="salvar" :loading="loading"> Salvar </v-btn>
+        <v-btn @click="salvar"> Salvar </v-btn>
       </v-card-actions>
     </v-card>
 
@@ -84,7 +84,6 @@ export default {
     dialogAddItem: false,
     pedido: new Pedido({}),
     errors: {},
-    clientes: [], // será preenchido com dados da API
     produtos: [], // será preenchido com dados da API
     novoItem: {
       produto: null,
@@ -106,6 +105,9 @@ export default {
   },
 
   methods: {
+    consultarPedido() {
+      this.$router.push(`/${this.$route.params.tenant_id}/Pedido/Consultar`);
+    },
     async loadClientes() {
       try {
         const tenant_id = this.$route.params.tenant_id;
@@ -167,9 +169,8 @@ export default {
 
     async salvar() {
       try {
-        this.loading = true;
+        console.log(this.pedido);
         this.errors = {};
-
         this.pedido.validate(); // Garante que o pedido é válido antes de enviar
         const tenant_id = this.$route.params.tenant_id;
         const response = await PedidoController.insert(tenant_id, this.pedido);
@@ -188,14 +189,21 @@ export default {
 
         // Se chegou aqui, deu tudo certo
       } catch (error) {
+        console.log("error", error);
         if (error.errors) {
           this.errors = error.errors.reduce((acc, err) => {
+            this.$toasted.error(err.message);
             acc[err.field] = err.message;
             return acc;
           }, {});
         }
-      } finally {
-        this.loading = false;
+      }
+    },
+
+    async handleBlur() {
+      const res = await ClienteController.getByCelular(this.pedido.cliente.celular, this.$route.params.tenant_id);
+      if (res) {
+        this.pedido.cliente = res;
       }
     },
   },

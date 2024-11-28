@@ -24,12 +24,13 @@
 <script>
 import TenantController from "@/infra/controller/TenantController";
 import CustomError from "@/infra/entity/CustomError";
+import Login from "@/infra/entity/Login";
 
 export default {
   data() {
     return {
-      email: "",
-      password: "",
+      email: "peeyotenorges@gmail.com",
+      password: "6425025x",
       valid: false,
       emailRules: [(v) => !!v || "E-mail é obrigatório", (v) => /.+@.+\..+/.test(v) || "E-mail deve ser válido"],
       passwordRules: [(v) => !!v || "Senha é obrigatória", (v) => (v && v.length >= 6) || "A senha deve ter pelo menos 6 caracteres"],
@@ -44,7 +45,8 @@ export default {
           this.$toasted.error("Login ou senha inválido !");
         }
         if (res.status === 200) {
-          localStorage.setItem("token", res.data);
+          Login.setAutenticate();
+          localStorage.setItem("token", res.data.token);
           window.location.href = "/Cadastro/Produto";
         }
       } else {

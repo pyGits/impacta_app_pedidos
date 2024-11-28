@@ -9,6 +9,10 @@ import Register from "@/views/Login/Register.vue";
 import CriarPedido from "@/views/Pedido/CriarPedido.vue";
 import ListarPedido from "@/views/Cadastro/Pedido/ListarPedido.vue";
 import EditarPedido from "@/views/Cadastro/Pedido/EditarPedido.vue";
+import Geral from "@/views/Configuracoes/Geral.vue";
+import CadastroEntregador from "@/views/Cadastro/Entregador/CadastroEntregador.vue";
+import ListaEntregador from "@/views/Cadastro/Entregador/ListaEntregador.vue";
+import ConsultarPedido from "@/views/Pedido/ConsultarPedido.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -24,6 +28,18 @@ const routes = [
     path: "/Cadastro/Produto",
     name: "ListaProduto",
     component: ListaProdutoVue,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/Cadastro/Entregador",
+    name: "ListaEntregador",
+    component: ListaEntregador,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/Cadastro/Entregador/:id",
+    name: "ListaEntregador",
+    component: CadastroEntregador,
     meta: { requiresAuth: true },
   },
   {
@@ -57,9 +73,24 @@ const routes = [
     meta: { requiresAuth: false },
   },
   {
+    path: "/:tenant_id/Pedido/Consultar",
+    component: ConsultarPedido,
+
+    meta: { requiresAuth: false },
+  },
+  {
     path: "/pedidos/editar/:id",
     component: EditarPedido,
     meta: { requiresAuth: true },
+  },
+  {
+    path: "/Configuracoes/Geral",
+    component: Geral,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "*",
+    redirect: "/login",
   },
 ];
 const router = new VueRouter({

@@ -36,6 +36,7 @@ export default {
         { text: "Nº Pedido", value: "id" },
         { text: "Cliente", value: "cliente_nome" },
         { text: "Data", value: "data" },
+        { text: "Status", value: "status" },
         { text: "Total", value: "total" },
         { text: "Ações", value: "actions", sortable: false },
       ],
@@ -61,6 +62,21 @@ export default {
         this.$toasted.error("Erro ao carregar pedidos");
       } finally {
         this.loading = false;
+      }
+    },
+
+    getStatusColor(status) {
+      switch (status) {
+        case "PENDENTE":
+          return "orange";
+        case "EM PROGRESSO":
+          return "blue";
+        case "CONCLUÍDO":
+          return "green";
+        case "CANCELADO":
+          return "red";
+        default:
+          return "grey"; // Cor padrão
       }
     },
 
